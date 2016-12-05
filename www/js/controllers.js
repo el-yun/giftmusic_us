@@ -1,40 +1,32 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic', 'ionic-audio'])
 .controller('usCtrl', function($scope) {
-	
+
 })
 .controller('searchCtrl', function($scope) {
-	
+
 })
 .controller('topCtrl', function($scope) {
-	
+
 })
-.controller('playerCtrl', function($scope) {
-	
-});
+.controller('playerCtrl', ['$scope', 'MediaManager', function($scope, MediaManager) {
 
-/*
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+  $scope.dynamicTrack = {};   // we use this scope variable to dynamically assign a track
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
+  $scope.tracks = [
+    {
+      url: 'http://nepid.kr/Mamamoo.mp3',  // audio file from the cloud
+      artist: '마마무',
+      title: '데칼코마니'
+    }
+  ];
+
+  $scope.stopPlayback = function() {
+    MediaManager.stop();  // will stop any audio currently playing
   };
-})
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
+  $scope.playTrack = function(index) {
+    $scope.dynamicTrack = $scope.tracks[index];   // assign one track
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+    $scope.togglePlayback = !$scope.togglePlayback; // start playback when track changes
   };
-});
-*/
+}]);
