@@ -1,7 +1,16 @@
 /* Empty. Add your own CSS if you like */
-.header { width: 100%; height: 50px; background-color: #b9b9b9; }
+.header { width: 100%; height: 70px; background-color: #b9b9b9; }
 .bottom { position: fixed; bottom: 0; left:0; right:0; height: 50px; }
-.box { float: left; width:100%; min-height: 50px; margin: 3px; }
+.box { float: left; width:100%; min-height: 50px; margin: 3px; cursor:pointer; }
+.btn { cursor:pointer; }
+
+.header-logo { position:absolute; left: 50%; margin-right: -100px; width: 200px; height: 70px; }
+.header-btn-login { position:absolute;  right: 0; width: 50px; float: right; height: 70px; }
+
+.top-myalbum-group, .top-rec-group { height: 280px; }
+
+.tab-control { background: #660099; }
+.tab-btn { float:left; width: 33.3%; text-align:center; text-decoration:none; color:#FFF; font-size: 17px; padding: 15px 0px;} 
 
 .list { margin: 0px; padding: 0px;}
 .list .list-item { width:100%; height: 60px; float:left; clear:left; }

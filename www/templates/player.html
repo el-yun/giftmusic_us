@@ -1,23 +1,31 @@
 <div ui-view id="player">
-	<div class="player-controller box">플레이어 컨트롤 박스</div>
-	<div class="player-list">
-    <input type="text" name="url" ng-model="url" value="http://nepid.kr/Mamamoo.mp3" style="width:100%"/>
-    <button class="button button-assertive" ng-click="playTrack(0)">Play first track</button>
-    <ion-audio-track track="dynamicTrack" toggle-playback="togglePlayback">
-      <div class="card">
-        <div class="item">
-          <h2>{{dynamicTrack.title}}</h2>
-
-          <p>{{dynamicTrack.artist}}</p>
-          <ion-audio-controls>
-            <a class="button button-icon icon" ion-audio-play></a>
-            <ion-spinner icon="ios" style="position: relative; top: 8px; left: 4px"></ion-spinner>
-          </ion-audio-controls>
-        </div>
-        <div class="item item-divider">
-          <ion-audio-progress-bar track="dynamicTrack" display-time></ion-audio-progress-bar>
-        </div>
-      </div>
-    </ion-audio-track>
+	<div class="player-display">
+		<ion-audio-track track="dynamicTrack" toggle-playback="togglePlayback">
+			  <ion-audio-controls>
+				<a class="button button-icon icon" ion-audio-play></a>
+			  </ion-audio-controls>
+			  <ion-audio-progress-bar track="dynamicTrack" display-time></ion-audio-progress-bar>
+		</ion-audio-track>
+		<h2>{{dynamicTrack.title}}</h2>
+		<p>{{dynamicTrack.artist}}</p>
+	</div>
+	<div class="search-list box">
+		<ul class="list" ng-repeat="(i, track) in tracks">
+			<li class="list-item">
+				<div class="item-content">
+					<input type="checkbox" name="selected" ng-click="toggleSelection(i)" value="{{i}}">
+					<p class="item-content-title">{{track.title}}</p>
+					<p class="item-content-description">{{track.artist}}</p>
+				</div>
+				<div class="item-right">
+					<button ng-click="playTrack(i)">재생</button>
+				</div>
+			</li>
+		<ul>
+	</div>
+	<div class="tab-control bottom">
+		<a class="tab-btn btn">선물하기</a>
+		<a class="tab-btn btn" ng-click="playTracks()">듣기</a>
+		<a class="tab-btn btn">담기</a>
 	</div>
 </div>

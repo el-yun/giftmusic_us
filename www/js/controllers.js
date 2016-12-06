@@ -8,25 +8,40 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
 .controller('topCtrl', function($scope) {
 
 })
-.controller('playerCtrl', ['$scope', 'MediaManager', function($scope, MediaManager) {
+.controller('playerCtrl', ['$scope', 'MediaManager', 'TrackList', function($scope, MediaManager, TrackList) {
 
-  $scope.dynamicTrack = {};   // we use this scope variable to dynamically assign a track
+	var NextIndex = 0;
+	$scope.dynamicTrack = {};
 
-  $scope.tracks = [
-    {
-      url: 'http://nepid.kr/Mamamoo.mp3',  // audio file from the cloud
-      artist: '마마무',
-      title: '데칼코마니'
-    }
-  ];
+	$scope.tracks = TrackList.all();
+	$scope.checkTrack = [];
 
-  $scope.stopPlayback = function() {
-    MediaManager.stop();  // will stop any audio currently playing
-  };
+	$scope.stopPlayback = function() {
+		if(NextIndex == 0) MediaManager.stop();
+		else {
+			$scope.playTrack(NextIndex);
+			NextIndex++;
+		}
+	};
 
-  $scope.playTrack = function(index) {
-    $scope.dynamicTrack = $scope.tracks[index];   // assign one track
+	$scope.playTrack = function(index) {
+		NextIndex = 0; // 재생 인덱스 초기화
 
-    $scope.togglePlayback = !$scope.togglePlayback; // start playback when track changes
-  };
+		$scope.dynamicTrack = $scope.tracks[index];  // 재생
+		$scope.togglePlayback = !$scope.togglePlayback;
+	};
+
+	$scope.playTracks = function(){
+		NextIndex = 0; // 재생 인덱스 초기화
+
+		$scope.playTrack(NextIndex); // 재생
+		if(($scope.checkTrack.length -1) > NextIndex) NextIndex++;
+		else NextIndex = 0;
+	};
+
+	$scope.toggleSelection = function toggleSelection(seq){
+		var idx = $scope.checkTrack.indexOf(seq);
+		if(idx > -1) $scope.checkTrack.splice(idx, 1);
+		else $scope.checkTrack.push(seq);
+	}
 }]);
