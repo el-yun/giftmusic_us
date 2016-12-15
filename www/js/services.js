@@ -4,6 +4,7 @@ angular.module('starter.services', [])
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
+  var playlist = [];
   var tracks = [
     {
 	  seq: 0,
@@ -27,6 +28,9 @@ angular.module('starter.services', [])
   return {
     all: function() {
       return tracks;
-    }
+    },
+	setTrack: function(t){
+		playlist = t;
+	}
   };
 });
