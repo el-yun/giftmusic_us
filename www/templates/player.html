@@ -12,10 +12,14 @@
 	<div class="search-list box">
 		<ul class="list" ng-repeat="(i, track) in tracks">
 			<li class="list-item">
-				<div class="item-content">
+				<div class="item-check">
 					<input type="checkbox" name="selected" ng-click="toggleSelection(i)" value="{{i}}">
-					<p class="item-content-title">{{track.title}}</p>
-					<p class="item-content-description">{{track.artist}}</p>
+				</div>
+				<div class="item-content">
+					<dl>
+						<dt class="item-content-title">{{track.title}}</dt>
+						<dt class="item-content-description">{{track.artist}}</dt>
+					</dl>
 				</div>
 				<div class="item-right">
 					<button ng-click="playTrack(i)">재생</button>
