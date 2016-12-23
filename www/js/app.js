@@ -27,7 +27,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -39,7 +39,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each tab has its own nav history stack:
     .state('us', {
       url: '/us',
-	  abstract: true,
+      abstract: true,
       templateUrl: 'templates/header.html',
       controller: 'usCtrl'
     })
@@ -49,7 +49,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       controller: 'topCtrl'
     })
     .state('us.search', {
-      url: '/search',
+      url: '/search/:keyword',
       templateUrl: 'templates/search.html',
       controller: 'searchCtrl'
     })
@@ -58,10 +58,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       templateUrl: 'templates/player.html',
       controller: 'playerCtrl'
     })
+    .state('myalbum', {
+      url: '/myalbum',
+      templateUrl: 'templates/myalbum.html',
+      controller: 'myalbumCtrl'
+    })
+    .state('send', {
+      url: '/send',
+      templateUrl: 'templates/send.html',
+      controller: 'sendCtrl'
+    })
 
 
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/us/top');
+  $httpProvider.useApplyAsync(true);
 
 });

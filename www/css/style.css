@@ -6,32 +6,60 @@
 	#f8f8f8 (gray line)
 
 */
-body, div, select {line-height: 1.4em; font-family:"Malgun Gothic", "맑은고딕"}
-.logo { font-size: 25px; font-weight: bold; color:#FFF; text-align: center; }
-.header { position: relative; float: left; height: 130px; background-color:rgba(35, 20, 72, 0.8); }
-.search-box { position: absolute; bottom: 13px; height: 40px; left:13px; right: 13px; float:left; background-color: #fff; }
-.search-box input{ margin: 5px; width: calc(100% - 10px);  height: 30px }
+/* common */
+body, div, select {line-height: 1.4em; font-family:"Malgun Gothic", "맑은고딕"; letter-spacing: -1px;}
 
-
-
-.bottom { position: fixed; bottom: 0; left:0; right:0; height: 50px; }
-.box { float: left; width:100%; min-height: 50px; cursor:pointer; }
-.btn { cursor:pointer; display:block; background-repeat: no-repeat; }
+/* header page */
+.logo { position: fixed; top: 15px; left: 50%; margin-left: -50px; width: 100px; font-size: 25px; font-weight: bold; color:#503582; text-align: center; }
+.header { position: relative; float: left; height: 140px; }
+.search-box { position: absolute; bottom: 13px; height: 46px; left:20px; right: 20px; float:left; background-color:#503582;  }
+.search-box input{ margin: 3px; width: calc(100% - 70px);  height: 40px; padding: 12px; font-size:17px; letter-spacing: -1px; }
 .header-logo { position:absolute; left: 50%; margin-right: -100px; width: 200px; height: 70px; }
 .header-btn-login { position:absolute;  right: 0; width: 50px; float: right; height: 70px; }
+.bottom { position: fixed; bottom: 0; left:0; right:0; height: 50px; }
+.btn { cursor:pointer; display:block; background-repeat: no-repeat; }
+/* navigate */
+.navigate { position: relative; float: left; height: 40px; }
+.sbox { float: left; width:100%; min-height: 40px; cursor:pointer; }
+.navigate-title { position:absolute; top:8px; left: 50%; margin-left: -60px;width: 120px; font-size: 24px; font-weight: bold; color:#503582; text-align:center; }
+.backkey { position: absolute; left: 15px; top: 15px; background-image: url('/img/back_icon.png'); display:block; width: 42px; height:39px; background-size: 29px 20px;background-repeat:no-repeat;  }
 
-.subject { font-size: 22px; font-weight: bold; color:#4f436c; letter-spacing:-1px; text-align:center; margin: 21px 0 10px 0;  }
-.top-myalbum-group, .top-rec-group { height: 280px; }
-.metro-box { float:left; min-width: 320px; width:calc(100% - 10px); height: 240px; margin: 10px 10px;  }
-.metro-box .img-button { width:calc(50% - 15px); height: 100px; background-color: #4f436c; float:left; margin: 5px; }
+/* send gift */
+.form-box { float:left; width: calc(100% - 30px); min-height: 70px; margin: 5px 15px 5px 15px; }
+p.form-subject { font-size: 18px; font-weight: bold; margin: 15px 5px 10px 5px;}
+.picture-box { position:relative; float:left; width: 100%; height: 250px; border: 1px solid #ededed; background-color:#f7f7f7 }
+.picture-up { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; }
+.picture-area { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 5; }
+.payment-box { float:left; width: 100%; height: 300px; background-color: #503582 }
 
+/* top */
+.box { float: left; width:100%; min-height: 50px; cursor:pointer; }
+.subject { font-size: 22px; font-weight: bold; color:#333333; letter-spacing:-1px; text-align:center; margin: 21px 0 10px 0;  }
+.group-section { position: relative; float:left; height: 320px; }
+.group-section .more { position:absolute; top: 21px; right: 0px; width: 80px; height: 20px; font-size: 17px; font-weight: bold; color:#888888; }
+.metro-box { position: relative; float:left; min-width: 320px; width:100%; height: 240px; margin: 10px 0;  }
+.metro-box .img-button { position: relative; float:left; width:calc(50% - 2px); height: 120px; margin: 1px; }
+.metro-box .img-cover { position:absolute; top:0; left:0; right: 0; bottom: 0;  background-color:rgba(35, 20, 72, 0.8); float:left;z-index:5}
+.metro-box .img-cover.none { position:absolute; top:0; left:0; right: 0; bottom: 0;  background-color:#f7f7f7; float:left;z-index:5}
+.img-cover p.album-title { font-size: 20px; color:#FFF; margin: 15px 15px; line-height: 25px;}
+.img-cover.none p.album-title { color:#888888 }
+
+.img-cover span.btn { float: right; margin: 5px 10px; width: 30px; height: 30px;color:#FFF; }
+
+.metro-box .album-cover { width: 100%; height: 100%; background-repeat: no-repeat; background-size: cover; }
+
+/* tab */
 .tab-control { background: #660099; }
 .tab-btn { float:left; width: 33.3%; text-align:center; text-decoration:none; color:#FFF; font-size: 17px; padding: 15px 0px;}
 
+/* list */
 .list { margin: 0px; padding: 0px;}
 .list .list-item { width:100%; float:left; clear:left; }
 .list-item .item-right { float:right; width: 70px; height: 37px; margin: 31px 0px; }
 .item-right span.playing { background-image:url('/img/playing_icon.png'); background-size: 37px 31px; background-repeat: no-repeat; display:block; width: 37px; height: 37px;  }
+.item-right span.toplay { background-image:url('/img/un_playing_icon.png'); background-size: 19px 27px; background-repeat: no-repeat; display:block; width: 28px; height: 39px;  }
+
+
 .list-item .item-check { width: 0px; height: 100px; overflow: hidden; float: left; }
 .list-item .item-content { float:left; width: calc(100% - 80px); padding: 20px 0 20px 0; }
 .list-item .item-content dl { margin: 0px 14px; width: 100%; }

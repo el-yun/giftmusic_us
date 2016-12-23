@@ -1,42 +1,20 @@
 <div ui-view id="search">
-	<div class="search-box searchbox box">(검색결과) 검색박스</div>
-	<div class="search-list box">
-		<ul class="list">
-			<li class="list-item">
-				<div class="item-content">
-					<p class="item-content-title">TEST</p>
-					<p class="item-content-description">aaaa</p>
-					<p class="item-content-description">aaaa</p>
-				</div>
-				<div class="item-right">
-					<button>재생</button>
-				</div>
-			</li>
-			<li class="list-item">
-				<div class="item-content">
-					<p class="item-content-title">TEST</p>
-					<p class="item-content-description">aaaa</p>
-					<p class="item-content-description">aaaa</p>
-				</div>
-				<div class="item-right">
-					<button>재생</button>
-				</div>
-			</li>
-			<li class="list-item">
-				<div class="item-content">
-					<p class="item-content-title">TEST</p>
-					<p class="item-content-description">aaaa</p>
-					<p class="item-content-description">aaaa</p>
-				</div>
-				<div class="item-right">
-					<button>재생</button>
-				</div>
-			</li>
-		<ul>
-	</div>
-	<div class="tab-control bottom">
-		<a class="tab-btn">선물하기</a>
-		<a class="tab-btn">듣기</a>
-		<a class="tab-btn">담기</a>
-	</div>
+  <div class="search-list box">
+    <ul class="list" ng-repeat="(i, track) in searchTracks">
+      <li class="list-item">
+        <div class="item-check">
+          <input type="checkbox" name="selected" ng-click="toggleSelection(i)" value="{{i}}">
+        </div>
+        <div class="item-content">
+          <dl>
+            <dt class="item-content-title">{{track.title}}</dt>
+            <dt class="item-content-description">{{track.artist}}</dt>
+          </dl>
+        </div>
+        <div class="item-right">
+          <span ng-click="playTrack(i)" class="toplay"></span>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
