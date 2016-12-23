@@ -1,0 +1,47 @@
+<div ui-view id="player">
+  <div ui-sref="us.top" class="player-logo">[LOGO]</div>
+  <div class="player-display" style="background-image:url('{{dynamicTrack.thumb}}')">
+    <div class="player-cover">
+      <!--
+          <ion-audio-track track="dynamicTrack" toggle-playback="togglePlayback">
+        <ion-audio-progress-bar display-time display-info></ion-audio-progress-bar>
+                <ion-audio-controls>
+                  <a class="button button-icon icon" ion-audio-play></a>
+                </ion-audio-controls>
+          </ion-audio-track>
+          <h2>{{dynamicTrack.title}}</h2>
+          <p>{{dynamicTrack.artist}}</p>
+      -->
+      <div class="player-option">
+        <div class="player-title">[TITLE]</div>
+        <div class="player-artist">[Artist]</div>
+        <div class="player-controller">
+            <span class="btn prev-button"></span>
+            <span class="btn play-button"></span>
+            <span class="btn next-button"></span>
+        </div>
+        <div class="player-repeat"><span>가사</span><span class="active">반복</span></div>
+      </div>
+      <div class="player-timesick"><span class="current-sick">0:00</span><span class="end-sick">0:00</span></div>
+      <div class="player-progress"></div>
+    </div>
+  </div>
+	<div class="search-list box">
+		<ul class="list" ng-repeat="(i, track) in tracks">
+			<li class="list-item">
+				<div class="item-check">
+					<input type="checkbox" name="selected" ng-click="toggleSelection(i)" value="{{i}}">
+				</div>
+				<div class="item-content">
+					<dl>
+						<dt class="item-content-title">{{track.title}}</dt>
+						<dt class="item-content-description">{{track.artist}}</dt>
+					</dl>
+				</div>
+				<div class="item-right">
+          <span ng-click="playTrack(i)" class="playing"></span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

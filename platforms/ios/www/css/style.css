@@ -1,0 +1,60 @@
+/* Empty. Add your own CSS if you like */
+/*
+	Default Color
+	#51357f (purple)
+	#f6b944 (orange)
+	#f8f8f8 (gray line)
+
+*/
+body, div, select {line-height: 1.4em; font-family:"Malgun Gothic", "맑은고딕"}
+.logo { font-size: 25px; font-weight: bold; color:#FFF; text-align: center; }
+.header { position: relative; float: left; height: 130px; background-color:rgba(35, 20, 72, 0.8); }
+.search-box { position: absolute; bottom: 13px; height: 40px; left:13px; right: 13px; float:left; background-color: #fff; }
+.search-box input{ margin: 5px; width: calc(100% - 10px);  height: 30px }
+
+
+
+.bottom { position: fixed; bottom: 0; left:0; right:0; height: 50px; }
+.box { float: left; width:100%; min-height: 50px; cursor:pointer; }
+.btn { cursor:pointer; display:block; background-repeat: no-repeat; }
+.header-logo { position:absolute; left: 50%; margin-right: -100px; width: 200px; height: 70px; }
+.header-btn-login { position:absolute;  right: 0; width: 50px; float: right; height: 70px; }
+
+.subject { font-size: 22px; font-weight: bold; color:#4f436c; letter-spacing:-1px; text-align:center; margin: 21px 0 10px 0;  }
+.top-myalbum-group, .top-rec-group { height: 280px; }
+.metro-box { float:left; min-width: 320px; width:calc(100% - 10px); height: 240px; margin: 10px 10px;  }
+.metro-box .img-button { width:calc(50% - 15px); height: 100px; background-color: #4f436c; float:left; margin: 5px; }
+
+.tab-control { background: #660099; }
+.tab-btn { float:left; width: 33.3%; text-align:center; text-decoration:none; color:#FFF; font-size: 17px; padding: 15px 0px;}
+
+.list { margin: 0px; padding: 0px;}
+.list .list-item { width:100%; float:left; clear:left; }
+.list-item .item-right { float:right; width: 70px; height: 37px; margin: 31px 0px; }
+.item-right span.playing { background-image:url('/img/playing_icon.png'); background-size: 37px 31px; background-repeat: no-repeat; display:block; width: 37px; height: 37px;  }
+.list-item .item-check { width: 0px; height: 100px; overflow: hidden; float: left; }
+.list-item .item-content { float:left; width: calc(100% - 80px); padding: 20px 0 20px 0; }
+.list-item .item-content dl { margin: 0px 14px; width: 100%; }
+.list-item .item-content dl dt { position: relative;white-space: nowrap;overflow: hidden; text-overflow: ellipsis; }
+.item-content-title { line-height: 100%; margin: 0px; padding: 0px; font-weight:bold; font-size: 17px; color: #383838 }
+.item-content-description { line-height: 100%; margin: 10px 0px; padding: 0px; font-size: 14px; color: #888888 }
+img.thumb { position: relative; display: inline-block; float:left; width: 15%; min-height: 46px; vertical-align: middle;}
+
+.player-logo { position: fixed; top: 20px; left: 20px; color:#e6b500; z-index: 200;font-size: 25px; font-weight: bold; }
+.player-display { float:left; position:relative; width: 100%; height: 320px; background-repeat: no-repeat; background-size: contain; background-position: center; }
+.player-progress { position:absolute; bottom:0; width: 100%; height: 28px; background: #8f8f8f; }
+.player-timesick { position:absolute; bottom:28px; width: 100%; height: 28px; }
+.player-timesick span { color:#FFF; }
+.player-timesick span.current-sick { position:relative;color:#FFF; float:left; margin: 0 10px; }
+.player-timesick span.end-sick { position:relative;color:#FFF; float:right; margin: 0 10px; }
+.player-option { position: absolute; top:0; bottom: 0px; left:50%; width:400px; margin-left: -200px;z-index:100;}
+.player-cover { postion: absolute; top:0; bottom:0; left:0; right:0; width:100%;height: 100%; background-color:rgba(35, 20, 72, 0.9);z-index: 1;}
+.player-title { width: 400px; text-align: center; height: 20px; font-size: 28px; font-weight: bold; color: #FFF; float:left; margin: 40px 0 10px 0;}
+.player-artist { width: 400px; text-align: center; height: 20px; font-size: 17px; font-weight: normal; color: #FFF; float:left; margin: 15px 0;}
+.player-controller { width: 271px; position:absolute; top: 150px; left: 50%; margin-left: -140px; height: 80px;}
+.player-controller span.play-button { float:left; width: 63px; height: 90px; background-image:url('/img/play_icon.png'); background-size: 63px 63px; }
+.player-controller span.prev-button { float:left;  width:34px; height: 24px; margin: 20px 35px; background-image:url('/img/icon_01.png'); background-size: 34px 24px; }
+.player-controller span.next-button { float:left;  width:34px; height: 24px; margin: 20px 35px; background-image:url('/img/icon_02.png'); background-size: 34px 24px; }
+.player-repeat { width: 400px; text-align: center; font-size: 18px; color: #FFF; float:left; margin-top:100px; }
+.player-repeat span { width: 70px; margin: 0 20px; }
+.player-repeat span.active { color:#e6b500; }
