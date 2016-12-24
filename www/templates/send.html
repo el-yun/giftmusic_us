@@ -1,3 +1,4 @@
+<ion-content>
 <div class="navigate sbox">
   <div class="backkey" ui-sref="us.top"></div>
   <div class="navigate-title"><span class="icon album"></span>선물하기</div>
@@ -13,25 +14,26 @@
   <div class="form-box">
     <p class="form-subject">  앨범명</p>
     <div class="form-field">
-      <input type="text" name="album-name" placeholder="앨범명을 입력해 주세요"/>
+      <input type="text" name="album-name" class="formfield"  ng-model="send.name"  placeholder="앨범명을 입력해 주세요"/>
     </div>
   </div>
   <div class="form-box">
     <p class="form-subject">  보내는 음악</p>
     <div class="form-field">
-      총 % 곡
+      <p class="form-text">총 <span ng-model="send.trackcnt">%</span> 곡</p>
+      <p class="form-link" ui-sref="editlist">목록 편집</p>
     </div>
   </div>
   <div class="form-box">
     <p class="form-subject">  함께 보낼 메시지</p>
     <div class="form-field">
-      <input type="text" name="album-name" placeholder="앨범명을 입력해 주세요"/>
+      <input type="text" name="album-name" class="formfield" ng-model="send.message" placeholder="메세지를 남겨주세요"/>
     </div>
   </div>
   <div class="form-box">
     <p class="form-subject">  받는 사람 연락처</p>
     <div class="form-field">
-      <input type="text" name="album-name" placeholder="앨범명을 입력해 주세요"/>
+      <input type="text" name="album-name" class="formfield" ng-model="send.hp" placeholder="문자 메세지로 전송 시 해당 번호로 보냅니다."/>
     </div>
   </div>
   <div class="form-box">
@@ -44,3 +46,4 @@
   <div class="payment-box">
   </div>
 </div>
+</ion-content>

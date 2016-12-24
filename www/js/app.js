@@ -25,9 +25,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       console.log(Media);
     }
   });
+
+  // Disable BACK button on home
+  $ionicPlatform.registerBackButtonAction(function(event) {
+    if (true) { // your check here
+      $ionicPopup.confirm({
+        title: 'System warning',
+        template: 'are you sure you want to exit?'
+      }).then(function(res) {
+        if (res) {
+          ionic.Platform.exitApp();
+        }
+      })
+    }
+  }, 100);
+
 })
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -48,10 +63,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       templateUrl: 'templates/top.html',
       controller: 'topCtrl'
     })
-    .state('us.search', {
+    .state('search', {
       url: '/search/:keyword',
       templateUrl: 'templates/search.html',
       controller: 'searchCtrl'
+    })
+    .state('editlist', {
+      url: '/editlist',
+      templateUrl: 'templates/editlist.html',
+      controller: 'editCtrl'
     })
     .state('player', {
       url: '/player',
@@ -68,7 +88,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       templateUrl: 'templates/send.html',
       controller: 'sendCtrl'
     })
-
 
 
   // if none of the above states are matched, use this as the fallback

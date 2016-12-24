@@ -1,14 +1,9 @@
 <ion-content>
-  <div class="header box">
-    <div class="logo" ui-sref="us.top">[LOGO]</div>
-    <div class="search-box">
-      <form ng-submit="trackSearch(this)">
-        <input type="text" name="keyword" ng-model="keyword" placeholder="듣고 싶은 곡을 검색하세요."/>
-      </form>
-    </div>
-    <div class="header-btn-login">로그인</div>
+  <div class="navigate sbox">
+    <div class="backkey" ui-sref="us.top"></div>
+    <div class="navigate-title"><span class="icon album"></span>담은 음악</div>
   </div>
-  <div ui-view id="search" class="search-page">
+  <div ui-view id="editlist" class="search-page">
     <div class="search-list box">
       <ul class="list" ng-repeat="(i, track) in searchTracks">
         <li class="list-item" ng-class="{checked: checkedItem(track.number)}" ng-click="toggleSelection(track.number)">
@@ -30,7 +25,5 @@
   </div>
 </ion-content>
 <div class="tab-control bottom">
-  <a class="tab-btn">선물하기</a>
-  <a class="tab-btn">듣기</a>
-  <a class="tab-btn" ng-click="pushList()">담기</a>
+  <a class="tab-submit" ng-click="setChangePost()">선택완료</a>
 </div>
