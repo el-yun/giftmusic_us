@@ -1,5 +1,4 @@
 angular.module('starter.services', [])
-
 .factory('TrackList', function($http, $timeout) {
   // Might use a resource here that returns a JSON array
 
@@ -8,20 +7,11 @@ angular.module('starter.services', [])
   var tracks = [];
   var search = [];
   var getList = function(seqno, type){
-	    if(typeof seqno == 'undefined') seqno = 2; // Default Value
+	  if(typeof seqno == 'undefined') seqno = 2; // Default Value
       return $http({
         method: 'GET', //방식
         url: "http://masterplayer.net/music/main/playlist?seqno=" + seqno + "&type=" + type
-        })
-        .success(function(res){
-          tracks = new Array();
-           // Push Tracks
-          angular.forEach(res.album, function(t){
-            var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, send: t.TYPE};
-            tracks.push(track);
-          });
-        }
-      );
+      });
   };
   var getRecommend= function(){
     return $http({
@@ -37,13 +27,25 @@ angular.module('starter.services', [])
 
   return {
     init: function(){
-      getRecommend();
+		tracks = [];
+		getRecommend();
+		getList(groupseq, "PLAYLIST").then(function(d){
+			receive = [];
+			angular.forEach(d.data.album, function (t) {
+				var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, number: t.TRACK_NUMBER};
+				receive.push(track);
+			});
+			tracks = receive;
+		});
     },
     all: function() {
       return tracks;
     },
+	setTrack: function(t) {
+		tracks = t;
+	},
     getMyPlaylist: function(seqno){
-      return getList(seqno);
+      return getList(seqno, "PLAYLIST");
     },
     getEditlist: function(seqno){
       return getList(seqno, "POST");
@@ -91,4 +93,56 @@ angular.module('starter.services', [])
       });
     }
   };
+})
+.service('PlayerService', function(AudioFactory) {
+  var myPlayer = {
+    
+    isPaused: true,
+    // Sample tracks, to be replaced by the audio files you actually want to use
+    trackList: [],
+    currentIndex: 0,
+	currentTime: 0,
+    play: function () {
+                myPlayer.isPaused = false;
+                AudioFactory.src = myPlayer.trackList[myPlayer.currentIndex].url;
+                AudioFactory.play();
+				myPlayer.currentTime = 0;
+            },
+    pause: function () {
+                myPlayer.isPaused = !myPlayer.isPaused;
+                if (myPlayer.isPaused) {
+                    AudioFactory.pause();
+					myPlayer.currentTime = AudioFactory.currentTime;
+                } else {
+					AudioFactory.currentTime = myPlayer.currentTime;
+                    AudioFactory.play();
+                }
+            },
+    previous: function () {
+                if (myPlayer.currentIndex > 0) {
+                    myPlayer.currentIndex--;
+                    myPlayer.play();
+                }
+            },
+ 
+    next: function () {
+                if (myPlayer.currentIndex < myPlayer.trackList.length) {
+                    myPlayer.currentIndex++;
+                    myPlayer.play();
+                }
+            },
+	duration : function(){
+		return AudioFactory.duration;
+	},
+	time : function(){
+		myPlayer.currentTime = AudioFactory.currentTime;
+		return AudioFactory.currentTime;
+	}
+  };
+   
+  return myPlayer;
+})
+.factory('AudioFactory', function($document) {
+  var audio = $document[0].createElement('audio');
+  return audio;
 });

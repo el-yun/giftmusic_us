@@ -24,7 +24,6 @@
     "cordova-plugin-media"
   ],
   "cordovaPlatforms": [
-    "ios",
     {
       "platform": "ios",
       "version": "",

@@ -74,6 +74,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       controller: 'editCtrl'
     })
     .state('player', {
+	  cache: false,
       url: '/player',
       templateUrl: 'templates/player.html',
       controller: 'playerCtrl'

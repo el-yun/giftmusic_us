@@ -1,11 +1,7 @@
 const groupseq = 1;
-angular.module('starter.controllers', ['ionic', 'ionic-audio'])
+angular.module('starter.controllers', ['ionic'])
 
   .controller('usCtrl', ['$scope', '$state','TrackList', function ($scope, $state, TrackList) {
-    TrackList.init(); // 초기화
-    TrackList.getMyPlaylist(); // 플레이리스트 가져오기
-    TrackList.getRecommendAlbum();
-
     $scope.trackSearch = function(){
       $state.go('search', { 'keyword': $scope.search });
     };    // 목록 담기
@@ -104,7 +100,6 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
 
   // Index Page
   .controller('topCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
-    TrackList.init(); // 초기화
   }])
   // Myalbum
   .controller('myalbumCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
@@ -112,33 +107,61 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
   }])
   // Send
   .controller('sendCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
-
+	  var token = "test";
+	  $scope.send = function(){
+		  window.open('http://masterplayer.net/music/main/message?token=' + token, '_system');
+	  };
   }])
   // Player
-  .controller('playerCtrl', ['$scope', 'MediaManager', 'TrackList', '$timeout', function ($scope, MediaManager, TrackList, $timeout) {
-    var setPlayer = function () {
-      // Async
-      $timeout(function () {
-        if (TrackList.all().length > 0) {
-          $scope.dynamicTrack = {};
-          $scope.tracks = TrackList.all();
-          $scope.dynamicTrack = $scope.tracks[0];
-          console.log($scope.dynamicTrack);
-          /*
-          $scope.stopPlayback = function () {
-            MediaManager.stop();
-          };
-          $scope.playTrack = function (index) {
-            $scope.dynamicTrack = $scope.tracks[index];  // 재생
-            $scope.togglePlayback = !$scope.togglePlayback;
-          };
-          */
-        } else {
-          setPlayer();
-        }
-      });
-    }
-    // init
-    TrackList.getMyPlaylist(groupseq);
-    setPlayer();
+  .controller('playerCtrl', ['$scope', 'TrackList', '$timeout', '$interval', 'PlayerService', function ($scope, TrackList, $timeout, $interval, PlayerService) {
+	var current = -1;
+	$scope.title = "No Track";
+	$scope.artist = "No Artist";
+	$scope.thumb = "";
+
+	$scope.playerPrev = function(){
+		PlayerService.previous();
+	};
+	$scope.playerNext = function(){
+		PlayerService.next();
+	};
+	$scope.playerStop = function(){
+		PlayerService.pause();
+	};
+	$scope.playerToPlay = function(i){
+		PlayerService.currentIndex = i;
+		PlayerService.play();
+	}
+	var setPlayer = function () {
+	  // Async
+	  $timeout(function () {
+		if (TrackList.all().length > 0) {
+		  $scope.dynamicTrack = {};
+		  $scope.tracks = [];
+		  $scope.tracks = TrackList.all();
+		  angular.forEach($scope.tracks, function (t) {
+			PlayerService.trackList.push(t);
+		  });
+		  PlayerService.play();
+		} else {
+		  setPlayer();
+		}
+	  });
+	}
+	$interval(function() {
+		var index = PlayerService.currentIndex;
+		if(current != index)
+		{
+			$scope.title = PlayerService.trackList[index].title;
+			$scope.artist = PlayerService.trackList[index].artist;
+			$scope.thumb = PlayerService.trackList[index].thumb;
+			current = index;
+		}
+		var seek = PlayerService.time();
+		var duration = PlayerService.duration();
+		console.log(Math.floor(seek) + "/" + Math.floor(duration)) ;
+	}, 1000);
+	// init
+	setPlayer();
+	TrackList.init(); // 초기화
   }]);
