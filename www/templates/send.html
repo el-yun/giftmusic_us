@@ -7,8 +7,11 @@
   <div class="form-box">
       <p class="form-subject">  앨범 이미지</p>
       <div class="picture-box">
-          <div class="picture-area"></div>
-          <div class="picture-up"></div>
+          <div class="picture-up">
+			 <input type="file" name="userfile" class="upload" ng-model="send.image" ng-change="imageChange()"/>
+		  </div>
+          <div class="picture-area">
+		  </div>
       </div>
   </div>
   <div class="form-box">

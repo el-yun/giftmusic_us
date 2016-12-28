@@ -108,6 +108,9 @@ angular.module('starter.controllers', ['ionic'])
   // Send
   .controller('sendCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
 	  var token = "test";
+	  $scope.imageChange = function(){
+			console.log($scope.send.image);
+	  };
 	  $scope.send = function(){
 		  window.open('http://masterplayer.net/music/main/message?token=' + token, '_system');
 	  };
