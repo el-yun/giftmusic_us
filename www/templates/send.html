@@ -23,7 +23,7 @@
   <div class="form-box">
     <p class="form-subject">  보내는 음악</p>
     <div class="form-field">
-      <p class="form-text">총 <span ng-model="send.trackcnt">%</span> 곡</p>
+      <p class="form-text">총 <span>{{albumcnt}}</span> 곡</p>
       <p class="form-link" ui-sref="editlist">목록 편집</p>
     </div>
   </div>
@@ -51,7 +51,7 @@
 </div>
 </ion-content>
 <div class="tab-control bottom">
-  <a class="tab-btn" ng-click="send()">보내기</a>
+  <a class="tab-btn" ng-click="sender()">보내기</a>
   <a class="tab-btn"></a>
   <a class="tab-btn"></a>
 </div>

@@ -11,7 +11,7 @@ body, div, select {line-height: 1.4em; font-family:"Malgun Gothic", "맑은고�
 body {overflow-y:auto}
 
 /* header page */
-.logo { position: fixed; top: 15px; left: 50%; margin-left: -50px; width: 100px; font-size: 25px; font-weight: bold; color:#503582; text-align: center; }
+.logo { position: fixed; top: 15px; left: 50%; margin-left: -50px; width: 100px; height: 35px; background-size: contain; background-repeat: no-repeat;margin-top: 7px; font-size: 25px; font-weight: bold; color:#503582; text-align: center; background-image:url(../img/logo.png); }
 .header { position: relative; float: left; height: 140px; }
 .search-box { position: absolute; bottom: 13px; height: 46px; left:20px; right: 20px; float:left; background-color:#503582;  }
 .search-box input{ margin: 3px; width: calc(100% - 70px);  height: 40px; padding: 12px; font-size:17px; letter-spacing: -1px; }
@@ -78,14 +78,14 @@ p.form-subject { font-size: 18px; font-weight: bold; margin: 15px 5px 10px 5px;}
 .item-content-description { margin: 10px 0px; padding: 0px; font-size: 14px; color: #888888 }
 img.thumb { position: relative; display: inline-block; float:left; width: 15%; min-height: 46px; vertical-align: middle;}
 
-.player-logo { position: fixed; top: 20px; left: 20px; color:#e6b500; z-index: 200;font-size: 25px; font-weight: bold; }
+.player-logo { position: fixed; top: 20px; left: 20px; width:80px; height: 40px; background-repeat: no-repeat; background-size:contain; color:#e6b500; z-index: 200;font-size: 25px; font-weight: bold; background-image:url(../img/logo_streaming.png); }
 .player-display { float:left; position:relative; width: 100%; height: 320px; background-repeat: no-repeat; background-size: contain; background-position: center; }
 .player-progress { position:absolute; bottom:0; width: 100%; height: 28px; background: #8f8f8f; }
 .player-timesick { position:absolute; bottom:28px; width: 100%; height: 28px; }
 .player-timesick span { color:#FFF; }
 .player-timesick span.current-sick { position:relative;color:#FFF; float:left; margin: 0 10px; }
 .player-timesick span.end-sick { position:relative;color:#FFF; float:right; margin: 0 10px; }
-.player-option { position: absolute; top:0; bottom: 0px; left:50%; width:400px; margin-left: -200px;z-index:100;}
+.player-option { position: absolute; top:0; bottom: 30px; left:50%; width:400px; margin-left: -200px;z-index:100;}
 .player-cover { postion: absolute; top:0; bottom:0; left:0; right:0; width:100%;height: 100%; background-color:rgba(35, 20, 72, 0.9);z-index: 1;}
 .player-title { width: 400px; text-align: center; height: 20px; font-size: 28px; font-weight: bold; color: #FFF; float:left; margin: 40px 0 10px 0;}
 .player-artist { width: 400px; text-align: center; height: 20px; font-size: 17px; font-weight: normal; color: #FFF; float:left; margin: 15px 0;}
@@ -96,3 +96,15 @@ img.thumb { position: relative; display: inline-block; float:left; width: 15%; m
 .player-repeat { width: 400px; text-align: center; font-size: 18px; color: #FFF; float:left; margin-top:100px; }
 .player-repeat span { width: 70px; margin: 0 20px; }
 .player-repeat span.active { color:#e6b500; }
+
+/* Progress Bar */
+input[type=range] {  -webkit-appearance: none;  width: 100%; }
+input[type=range]::-webkit-slider-runnable-track {  width: 100%;  height: 28px;  background: #8f8f8f;  border: none;}
+input[type=range]::-webkit-slider-thumb {  -webkit-appearance: none;  border: none;  height: 28px;  width: 16px;  background: goldenrod;}
+input[type=range]:focus {  outline: none;}
+input[type=range]:focus::-webkit-slider-runnable-track {  background: #8f8f8f;}
+input[type=range]::-moz-range-track {  width: 100%;  height: 28px;  background: #8f8f8f;  border: none;}
+input[type=range]::-moz-range-thumb {  border: none;  height: 16px;  width: 16px;  border-radius: 50%;  background: goldenrod;}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{  outline: 1px solid white;  outline-offset: -1px;}
