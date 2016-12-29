@@ -7,11 +7,10 @@ angular.module('starter.services', [])
   var recommend = [];
   var tracks = [];
   var search = [];
-  var getList = function(seqno, type){
-	    if(typeof seqno == 'undefined') seqno = 2; // Default Value
+  var getList = function(seqno, user){
       return $http({
         method: 'GET', //방식
-        url: "http://masterplayer.net/music/main/playlist?seqno=" + seqno + "&type=" + type
+        url: "http://masterplayer.net/music/main/playlist?seqno=" + seqno + "&user=" + user
         })
         .success(function(res){
           tracks = new Array();
@@ -42,14 +41,17 @@ angular.module('starter.services', [])
     all: function() {
       return tracks;
     },
-    getMyPlaylist: function(seqno){
-      return getList(seqno);
-    },
-    getEditlist: function(seqno){
-      return getList(seqno, "POST");
+    getMyPlaylist: function(seqno, user){
+      return getList(seqno, user);
     },
     getRecommendAlbum: function(){
       return getRecommend();
+    },
+    getAlbum : function(user){
+      return $http({
+        method: 'get', //방식
+        url: 'http://masterplayer.net/music/main/AlbumList?user=' + user
+      });
     },
     getSearchTrack : function(text){
       return $http({

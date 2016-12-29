@@ -1,9 +1,9 @@
-const groupseq = 1;
+var groupseq = 1;
+const user = "test";
 angular.module('starter.controllers', ['ionic', 'ionic-audio'])
 
   .controller('usCtrl', ['$scope', '$state','TrackList', function ($scope, $state, TrackList) {
     TrackList.init(); // 초기화
-    TrackList.getMyPlaylist(); // 플레이리스트 가져오기
     TrackList.getRecommendAlbum();
 
     $scope.trackSearch = function(){
@@ -14,7 +14,7 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
 
   .controller('editCtrl', ['$scope','$stateParams', 'TrackList', function ($scope, $stateParams, TrackList) {
     $scope.selection = [];
-    TrackList.getMyPlaylist(groupseq).then(function(d){
+    TrackList.getMyPlaylist(groupseq, user).then(function(d){
       var edit = [];
       angular.forEach(d.data.album, function (t) {
         var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, number: t.TRACK_NUMBER};
@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
         $scope.selection.push(index);
       }
     };
-    
+
     $scope.setChangePost = function(){
       TrackList.updatePlayGroup(groupseq, $scope.selection, "POST");
     };
@@ -103,19 +103,47 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
   }])
 
   // Index Page
-  .controller('topCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
+  .controller('topCtrl', ['$scope', 'TrackList', '$state', function ($scope, TrackList, $state) {
     TrackList.init(); // 초기화
+    var albums = [{'PLAYGROUP' : groupseq, 'POST_TITLE' : '내가 담은 음악', 'POST_TOKEN' : null}];
+    TrackList.getAlbum(user).then(function(d){
+      angular.forEach(d.data[0], function(a){
+        albums.push(a);
+      });
+      $scope.albums = albums;
+    });
+
+    $scope.goAlbum = function(group){
+      if(typeof token == 'undefined'){
+        $state.go('player', { 'group': null });
+      } else {
+        $state.go('player', { 'group': group });
+      }
+    };    // 목록 담기
   }])
   // Myalbum
-  .controller('myalbumCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
-
+  .controller('myalbumCtrl', ['$scope', 'TrackList', '$state', function ($scope, TrackList, $state) {
+    $scope.goAlbum = function(group){
+      if(typeof token == 'undefined'){
+        $state.go('player', { 'group': null });
+      } else {
+        $state.go('player', { 'group': group });
+      }
+    };
+    var albums = [];
+    TrackList.getAlbum(user).then(function(d){
+      angular.forEach(d.data[0], function(a){
+        albums.push(a);
+      });
+      $scope.albums = albums;
+    });
   }])
   // Send
   .controller('sendCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
 
   }])
   // Player
-  .controller('playerCtrl', ['$scope', 'MediaManager', 'TrackList', '$timeout', function ($scope, MediaManager, TrackList, $timeout) {
+  .controller('playerCtrl', ['$scope', 'MediaManager', 'TrackList', '$timeout', '$stateParams', function ($scope, MediaManager, TrackList, $timeout, $stateParams) {
     var setPlayer = function () {
       // Async
       $timeout(function () {
@@ -139,6 +167,8 @@ angular.module('starter.controllers', ['ionic', 'ionic-audio'])
       });
     }
     // init
-    TrackList.getMyPlaylist(groupseq);
+    if(typeof $stateParams.group == 'undefined') $stateParams.group = groupseq;
+    else groupseq = $stateParams.group;
+    TrackList.getMyPlaylist($stateParams.group, user);
     setPlayer();
   }]);
