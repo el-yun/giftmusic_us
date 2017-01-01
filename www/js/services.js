@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .factory('TrackList', function($http, $timeout) {
+  .factory('TrackList', function($http) {
     // Might use a resource here that returns a JSON array
 
     // Some fake testing data
@@ -39,11 +39,19 @@ angular.module('starter.services', [])
         getRecommend();
         getList(groupseq, "PLAYLIST").then(function(d){
           receive = [];
-          angular.forEach(d.data.album, function (t) {
-            var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, number: t.TRACK_NUMBER};
-            receive.push(track);
-          });
-          tracks = receive;
+            angular.forEach(d.data.album, function (t) {
+              var track = {
+                seq: t.SEQ,
+                url: t.TRACK_STREAM,
+                artist: t.ARTIST,
+                title: t.TITLE,
+                thumb: t.ALBUM_THUMB,
+                number: t.TRACK_NUMBER
+              };
+              receive.push(track);
+            });
+            tracks = receive;
+          console.log(tracks);
         });
       },
       all: function() {
@@ -87,21 +95,28 @@ angular.module('starter.services', [])
           console.log(d);
         });
       },
-      sendPost : function(group, tracks, type, d){
-        console.log(d);
+      sendPost : function(d, cart){
         return $http({
           method: 'post', //방식
-          url: 'http://masterplayer.net/main/updatepost',
+          url: 'http://masterplayer.net/main/albumPost',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           transformRequest: function(obj) {
+            console.log(obj);
             var str = [];
-            for(var p in obj)
-              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            for (var p in obj){
+              var d = obj[p];
+              if ($.isArray(d)) {
+                for (var o in d) {
+                  if(p == "tracks") str.push(encodeURIComponent(p) + "[] =" + encodeURIComponent(d[o]));
+                  else str.push(encodeURIComponent(o) + "=" + encodeURIComponent(d[o]));
+                }
+              } else {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+              }
+            }
             return str.join("&");
           },
-          data : {group: group, tracks: tracks, type: type}
-        }).success(function(d){
-          console.log(d);
+          data: {data : d, tracks : cart}
         });
       }
     };
@@ -162,3 +177,18 @@ angular.module('starter.services', [])
   var audio = $document[0].createElement('audio');
   return audio;
 });
+
+function ArrayAssoc(arr, formData){
+  if ($.isArray(arr)) {
+    console.log(arr);
+    angular.forEach(arr, function (d, k) {
+      formData = ArrayAssoc(d, formData);
+    });
+  } else {
+    angular.forEach(arr, function (d, k) {
+      formData.append(k, d);
+      console.log(d);
+    });
+  }
+  return formData;
+}

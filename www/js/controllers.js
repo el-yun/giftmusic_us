@@ -47,7 +47,7 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.setChangePost = function(){
-      $state.go('send', null);
+      $state.go('send', { 'cnt' : cart });
     };
   }])
 
@@ -55,7 +55,7 @@ angular.module('starter.controllers', ['ionic'])
       var search = [];
       $scope.selection = [];
       $scope.tab = true;
-      $scope.keyword = "이문세";
+      $scope.keyword = "";
 
 
       // 검색 내용 출력
@@ -143,16 +143,44 @@ angular.module('starter.controllers', ['ionic'])
     };    // 목록 담기
   }])
   // Send
-  .controller('sendCtrl', ['$scope', 'TrackList', function ($scope, TrackList) {
+  .controller('sendCtrl', ['$rootScope' ,'$scope', 'TrackList', '$stateParams', '$httpParamSerializerJQLike', function ($rootScope, $scope, TrackList, $stateParams, $httpParamSerializerJQLike) {
 	  var token = "test";
-	  $scope.imageChange = function(){
-			console.log($scope.send);
+    $scope.albumcnt = 0;
+    $scope.tracks = [];
+    $scope.sendfrm = [];
+
+    $rootScope.$on('$stateChangeStart',
+      function(event, toState, toParams, fromState, fromParams){
+        // do something
+        $scope.albumcnt = cart.length;
+      });
+    /*
+    $scope.uploadFile = function(event){
+      var files = event.target.files;
+      if (files && files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          $scope.sendfrm.image = event.target.result;
+          $scope.sendfrm.preview = event.target.result;
+          $scope.$apply();
+        }
+        reader.readAsDataURL(files[0]);
+        //reader.readAsBinaryString(files[0]);
+      }
 	  };
-    $scope.albumcnt = cart.length;
+	  */
+
 	  $scope.sender = function(){
-      console.log($scope.send);
-      TrackList.sendPost(groupseq, $scope.selection, null , "POST");
-		  window.open('http://masterplayer.net/main/message?token=' + token, '_system');
+      var formData = $scope.sendfrm;
+      //var formfile = formData.file;
+      formData.group = groupseq;
+      formData.type = "POST";
+      formData.sender = user;
+      TrackList.sendPost(formData, cart).then(function(d){
+        console.log(d);
+        var p = d.data.data.token;
+        window.open('http://masterplayer.net/main/message?token=' + encodeURI(p), '_system', 'location=yes');
+      });
 	  };
   }])
   // Player
@@ -204,23 +232,55 @@ angular.module('starter.controllers', ['ionic'])
 	}
 	$interval(function() {
 		var index = PlayerService.currentIndex;
-		if(current != index)
-		{
-			$scope.title = PlayerService.trackList[index].title;
-			$scope.artist = PlayerService.trackList[index].artist;
-			$scope.thumb = PlayerService.trackList[index].thumb;
-      $scope.indexer = index;
-			current = index;
-		}
-    var duration = PlayerService.duration();
-    var time = PlayerService.time();
-    $scope.seek = Math.floor(100*(time/duration));
-    $scope.playtime = Math.floor(time*1000);
-    $scope.endtime = Math.floor(duration*1000);
+    if(PlayerService.trackList.length > 0) {
+      if (current != index) {
+        $scope.title = PlayerService.trackList[index].title;
+        $scope.artist = PlayerService.trackList[index].artist;
+        $scope.thumb = PlayerService.trackList[index].thumb;
+        $scope.indexer = index;
+        current = index;
+      }
+      var duration = PlayerService.duration();
+      var time = PlayerService.time();
+      $scope.seek = Math.floor(100 * (time / duration));
+      $scope.playtime = Math.floor(time * 1000);
+      $scope.endtime = Math.floor(duration * 1000);
+    }
 	}, 500);
     // init
     if(typeof $stateParams.group == 'undefined') $stateParams.group = groupseq;
     else groupseq = $stateParams.group;
     TrackList.getMyPlaylist($stateParams.group, user);
     setPlayer();
-  }]);
+  }])
+.directive('customOnChange', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      var onChangeHandler = scope.$eval(attrs.customOnChange);
+      element.bind('change', onChangeHandler);
+    }
+  };
+})
+.directive('file', function () {
+  return {
+    scope: {
+      file: '='
+    },
+    link: function (scope, el, attrs) {
+      el.bind('change', function (event) {
+        var file = event.target.files[0];
+        scope.file = file ? file : undefined;
+
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          //scope.file = event.target.result;
+          console.log(scope);
+        }
+        scope.$apply();
+        //reader.readAsDataURL(file);
+        reader.readAsBinaryString(file);
+      });
+    }
+  };
+})
