@@ -66,6 +66,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('search', {
       url: '/search/:keyword',
       templateUrl: 'templates/search.html',
+      cache: false,
       controller: 'searchCtrl'
     })
     .state('editlist', {

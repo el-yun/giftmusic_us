@@ -1,9 +1,17 @@
 var groupseq = 1;
 var cart = [];
+var toastView = function(scope, timeout, message){
+  scope.toast_message = message;
+  scope.toast = true;
+  timeout(function(){
+    scope.toast = false;
+  }, 3000);
+}
 const user = "test";
 angular.module('starter.controllers', ['ionic'])
   .controller('usCtrl', ['$scope', '$state','TrackList', function ($scope, $state, TrackList) {
     $scope.trackSearch = function(){
+      console.log("go");
       $state.go('search', { 'keyword': $scope.search });
     };    // 목록 담기
 
@@ -18,6 +26,11 @@ angular.module('starter.controllers', ['ionic'])
       });
       $scope.searchTracks = edit;
     });
+
+    $scope.goAlbum = function(){
+      TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+      $state.go('player', { 'group': null });
+    };
 
     $scope.doTheBack = function() {
       window.history.back();
@@ -48,15 +61,20 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.setChangePost = function(){
       $state.go('send', { 'cnt' : cart });
+      $scope.apply();
     };
   }])
 
-  .controller('searchCtrl', ['$scope','$stateParams', 'TrackList', function ($scope, $stateParams, TrackList) {
+  .controller('searchCtrl', ['$scope','$stateParams', 'TrackList', '$state', '$timeout', function ($scope, $stateParams, TrackList, $state, $timeout) {
       var search = [];
       $scope.selection = [];
       $scope.tab = true;
       $scope.keyword = "";
 
+      $scope.viewMenu = function(seqno){
+        $scope.menu = true;
+        $scope.selectAlbum = seqno;
+      };
 
       // 검색 내용 출력
       var printList = function (d){
@@ -74,7 +92,10 @@ angular.module('starter.controllers', ['ionic'])
       $scope.trackSearch = function(t){
         printList(t.keyword);
       };
-      if(typeof $stateParams.keyword != 'undefined') printList($stateParams.keyword);
+      if(typeof $stateParams.keyword != 'undefined'){
+        console.log($stateParams.keyword);
+        printList($stateParams.keyword);
+      }
 
       // 토클된 트랙
       $scope.checkedItem = function(i){
@@ -94,17 +115,29 @@ angular.module('starter.controllers', ['ionic'])
         }
           // is newly selected
         else {
+          $scope.viewMenu();
           $scope.selection.push(index);
         }
       };
 
+      $scope.goAlbum = function(){
+        TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+        $state.go('player', { 'group': null });
+      };
+
       $scope.pushList = function(){
         TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
       };
+
+      $scope.gift = function(){
+        TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+        $state.go('send', { 'cnt' : cart });
+      }
   }])
 
   // Index Page
-  .controller('topCtrl', ['$scope', 'TrackList', '$state', function ($scope, TrackList, $state) {
+  .controller('topCtrl', ['$scope', 'TrackList', '$state', '$timeout',function ($scope, TrackList, $state, $timeout) {
     TrackList.init(); // 초기화
     var albums = [{'PLAYGROUP' : groupseq, 'POST_TITLE' : '내가 담은 음악', 'POST_TOKEN' : null}];
     TrackList.getAlbum(user).then(function(d){
@@ -113,6 +146,27 @@ angular.module('starter.controllers', ['ionic'])
       });
       $scope.albums = albums;
     });
+
+    $scope.viewMenu = function(seqno){
+      $scope.menu = true;
+      $scope.selectAlbum = seqno;
+    };
+
+    $scope.pushAlbum = function(seqno){
+      TrackList.getTracks(seqno, user).then(function(d){
+        var result = TrackList.setPlayGroup(d.data);
+        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
+      });
+    };
+
+    $scope.gift = function(seqno){
+      TrackList.getTracks(seqno, user).then(function(d){
+        angular.forEach(d.data.album, function (t) {
+          cart.push(t.TRACK_NUMBER);
+        });
+        $state.go('send', { 'cnt' : cart });
+      });
+    };
 
     $scope.goAlbum = function(group){
       if(typeof token == 'undefined'){
@@ -124,15 +178,38 @@ angular.module('starter.controllers', ['ionic'])
   }])
 
   // Myalbum
-  .controller('myalbumCtrl', ['$scope', 'TrackList', '$state', function ($scope, TrackList, $state) {
+  .controller('myalbumCtrl', ['$scope', 'TrackList', '$state', '$timeout', function ($scope, TrackList, $state, $timeout) {
     TrackList.init(); // 초기화
     var albums = [];
     TrackList.getAlbum(user).then(function(d){
       angular.forEach(d.data[0], function(a){
         albums.push(a);
       });
+      console.log(albums);
       $scope.albums = albums;
     });
+
+    $scope.pushAlbum = function(seqno){
+      console.log(seqno);
+      TrackList.getTracks(seqno, user).then(function(d){
+        var result = TrackList.setPlayGroup(d.data);
+        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
+      });
+    };
+
+    $scope.viewMenu = function(seqno){
+      $scope.menu = true;
+      $scope.selectAlbum = seqno;
+    };
+
+    $scope.gift = function(seqno){
+      TrackList.getTracks(seqno, user).then(function(d){
+        angular.forEach(d.data.album, function (t) {
+          cart.push(t);
+        });
+        $state.go('send', { 'cnt' : cart });
+      });
+    };
 
     $scope.goAlbum = function(group){
       if(typeof token == 'undefined'){
@@ -177,9 +254,8 @@ angular.module('starter.controllers', ['ionic'])
       formData.type = "POST";
       formData.sender = user;
       TrackList.sendPost(formData, cart).then(function(d){
-        console.log(d);
         var p = d.data.data.token;
-        window.open('http://masterplayer.net/main/message?token=' + encodeURI(p), '_system', 'location=yes');
+        window.open('http://masterplayer.net/main/message?token=' + encodeURI(p) + '&message=' + encodeURIComponent(formData.description), '_system', 'location=yes');
       });
 	  };
   }])

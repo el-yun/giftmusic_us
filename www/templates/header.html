@@ -1,12 +1,12 @@
-<ion-content>
+
   <div class="header box">
     <div class="logo" ui-sref="us.top"></div>
     <div class="search-box">
       <form ng-submit="trackSearch()">
         <input type="text" ng-model="search" placeholder="듣고 싶은 곡을 검색하세요."/>
+        <button class="search">검색</button>
       </form>
     </div>
     <div class="header-btn-login"></div>
   </div>
   <div ui-view></div>
-</ion-content>

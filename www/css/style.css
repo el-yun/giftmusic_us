@@ -14,12 +14,13 @@ body {overflow-y:auto}
 .logo { position: fixed; top: 15px; left: 50%; margin-left: -50px; width: 100px; height: 35px; background-size: contain; background-repeat: no-repeat;margin-top: 7px; font-size: 25px; font-weight: bold; color:#503582; text-align: center; background-image:url(../img/logo.png); }
 .header { position: relative; float: left; height: 140px; }
 .search-box { position: absolute; bottom: 13px; height: 46px; left:20px; right: 20px; float:left; background-color:#503582;  }
-.search-box input{ margin: 3px; width: calc(100% - 70px);  height: 40px; padding: 12px; font-size:17px; letter-spacing: -1px; }
+.search-box input{ margin: 3px; width: calc(100% - 70px);  height: 40px; padding: 12px; font-size:17px; letter-spacing: -1px;float:left; }
 .header-logo { position:absolute; left: 50%; margin-right: -100px; width: 200px; height: 70px; }
 .header-btn-login { position:absolute;  right: 0; width: 50px; float: right; height: 70px; }
-.bottom { position: fixed; bottom: 0; left:0; right:0; height: 50px; z-index: 100; }
+.bottom { position: fixed; bottom: 0; left:0; right:0; height: 50px; z-index: 15; }
 .btn { cursor:pointer; display:block; background-repeat: no-repeat; }
 .search-list { margin-bottom: 50px; }
+button.search { float:right; border:0px solid; background-color:#503582; color:#FFF; padding: 12px; font-size: 16px; width: 63px;}
 
 /* navigate */
 .navigate { position: relative; float: left; height: 40px; }
@@ -40,16 +41,18 @@ p.form-subject { font-size: 18px; font-weight: bold; margin: 15px 5px 10px 5px;}
 /* top */
 .box { float: left; width:100%; min-height: 50px; cursor:pointer; }
 .subject { font-size: 22px; font-weight: bold; color:#333333; letter-spacing:-1px; text-align:center; margin: 21px 0 10px 0;  }
-.group-section { position: relative; float:left; height: 320px; }
+.group-section { position: relative; float:left; height: 270px; }
 .group-section .more { position:absolute; top: 21px; right: 0px; width: 80px; height: 20px; font-size: 17px; font-weight: bold; color:#888888; }
-.metro-box { position: relative; float:left; min-width: 320px; width:100%; height: 240px; margin: 10px 0;  }
-.metro-box .img-button { position: relative; float:left; width:calc(50% - 2px); height: 120px; margin: 1px; }
+.metro-box { position: relative; float:left; min-width: 320px; width:100%; height: 200px; margin: 10px 0;  }
+.metro-box .img-button { position: relative; float:left; width:calc(50% - 2px); height: 100px; margin: 1px; }
 .metro-box .img-cover { position:absolute; top:0; left:0; right: 0; bottom: 0;  background-color:rgba(35, 20, 72, 0.8); float:left;z-index:5}
 .metro-box .img-cover.none { position:absolute; top:0; left:0; right: 0; bottom: 0;  background-color:#f7f7f7; float:left;z-index:5}
-.img-cover p.album-title { font-size: 20px; color:#FFF; margin: 15px 15px; line-height: 25px;}
+.img-cover p.album-title { font-size: 20px; color:#FFF; margin: 15px 15px; line-height: 25px; text-overflow: ellipsis; height: 25px;}
 .img-cover.none p.album-title { color:#888888 }
 
-.img-cover span.btn { float: right; margin: 5px 10px; width: 30px; height: 30px;color:#FFF; }
+.img-cover span.btn { float: right; margin: 5px 12px 5px 0px; width: 30px; height: 30px;color:#FFF; }
+.img-cover span.packing { background-image: url('../img/send.png');background-size: 30px 30px; }
+.img-cover span.playing { background-image: url('../img/play_y.png');background-size: 30px 30px; }
 
 .metro-box .album-cover { width: 100%; height: 100%; background-repeat: no-repeat; background-size: cover; }
 
@@ -98,6 +101,7 @@ img.thumb { position: relative; display: inline-block; float:left; width: 15%; m
 .player-repeat span { width: 70px; margin: 0 20px; }
 .player-repeat span.active { color:#e6b500; }
 
+
 /* Progress Bar */
 input[type=range] {  -webkit-appearance: none;  width: 100%; }
 input[type=range]::-webkit-slider-runnable-track {  width: 100%;  height: 28px;  background: #8f8f8f;  border: none;}
@@ -109,3 +113,25 @@ input[type=range]::-moz-range-thumb {  border: none;  height: 16px;  width: 16px
 
 /*hide the outline behind the border*/
 input[type=range]:-moz-focusring{  outline: 1px solid white;  outline-offset: -1px;}
+
+div.toast { position:absolute; bottom:50px; left: 0px; right: 0px; height: 50px; background-color:rgba(0, 0, 0, 0.8); z-index:20; color: #FFF; padding: 15px 10px; text-align:center; }
+
+.fadein,
+.fadeout {
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1.0s;
+}
+
+.fadein.ng-hide-remove,
+.fadeout.ng-hide-add.ng-hide-add-active {
+  opacity: 0;
+  display: block !important;
+}
+
+.fadeout.ng-hide-add,
+.fadein.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1;
+  display: block !important;
+}

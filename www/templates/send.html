@@ -1,59 +1,49 @@
 <ion-content>
-<div class="navigate sbox">
-  <div class="backkey" ui-sref="us.top"></div>
-  <div class="navigate-title"><span class="icon album"></span>선물하기</div>
-</div>
+  <div class="navigate sbox">
+    <div class="backkey" ui-sref="us.top"></div>
+    <div class="navigate-title"><span class="icon album"></span>선물하기</div>
+  </div>
   <form>
     <div ui-view id="send">
       <div class="form-box">
-        <p class="form-subject"> 앨범 이미지</p>
-        <div class="picture-box">
-          <div class="picture-up">
-            <input type="file" name="file" class="upload" ng-model="file" file="file">
-          </div>
-          <div class="picture-area">
-            <img ng-src="{{preview}}" class="preview"/>
-          </div>
+        <p class="form-subject"> 앨범명</p>
+        <div class="form-field">
+          <input type="text" name="album-name" class="formfield" ng-model="sendfrm.title" placeholder="앨범명을 입력해 주세요"/>
         </div>
       </div>
-    </div>
-    <div class="form-box">
-      <p class="form-subject"> 앨범명</p>
-      <div class="form-field">
-        <input type="text" name="album-name" class="formfield" ng-model="sendfrm.title" placeholder="앨범명을 입력해 주세요"/>
+      <div class="form-box">
+        <p class="form-subject"> 보내는 음악</p>
+        <div class="form-field">
+          <p class="form-text">총 <span>{{albumcnt}}</span> 곡</p>
+          <p class="form-link" ui-sref="editlist">목록 편집</p>
+        </div>
       </div>
-    </div>
-    <div class="form-box">
-      <p class="form-subject"> 보내는 음악</p>
-      <div class="form-field">
-        <p class="form-text">총 <span>{{albumcnt}}</span> 곡</p>
-        <p class="form-link" ui-sref="editlist">목록 편집</p>
+      <div class="form-box">
+        <p class="form-subject"> 함께 보낼 메시지</p>
+        <div class="form-field">
+          <input type="text" name="album-name" class="formfield" ng-model="sendfrm.description"
+                 placeholder="메세지를 남겨주세요"/>
+        </div>
       </div>
-    </div>
-    <div class="form-box">
-      <p class="form-subject"> 함께 보낼 메시지</p>
-      <div class="form-field">
-        <input type="text" name="album-name" class="formfield" ng-model="sendfrm.description" placeholder="메세지를 남겨주세요"/>
+      <div class="form-box">
+        <p class="form-subject"> 받는 사람 연락처</p>
+        <div class="form-field">
+          <input type="text" name="album-name" class="formfield" ng-model="sendfrm.account"
+                 placeholder="문자 메세지로 전송 시 해당 번호로 보냅니다."/>
+        </div>
       </div>
-    </div>
-    <div class="form-box">
-      <p class="form-subject"> 받는 사람 연락처</p>
-      <div class="form-field">
-        <input type="text" name="album-name" class="formfield" ng-model="sendfrm.account"
-               placeholder="문자 메세지로 전송 시 해당 번호로 보냅니다."/>
+      <div class="form-box">
+        <p class="form-subject"> 전송 방법</p>
+        <div class="form-field">
+          <label><input type="radio" name="sendtype" ng-model="sendfrm.type" value="kakao">카카오톡</label>
+          <label><input type="radio" name="sendtype" ng-model="sendfrm.type" value="kakao" disabled>문자 메세지</label>
+        </div>
       </div>
-    </div>
-    <div class="form-box">
-      <p class="form-subject"> 전송 방법</p>
-      <div class="form-field">
-        <label><input type="radio" name="sendtype" ng-model="sendfrm.type" value="kakao">카카오톡</label>
-        <label><input type="radio" name="sendtype" ng-model="sendfrm.type" value="kakao">문자 메세지</label>
+      <div class="payment-box">
       </div>
+      <input type="hidden" name="cart" ng-model="sendfrm.tracks"/>
+      <input type="hidden" name="sender" ng-model="sendfrm.senderName" value="{{sendfrm.senderName}}"/>
     </div>
-    <div class="payment-box">
-    </div>
-    <input type="hidden" name="cart" ng-model="sendfrm.tracks"/>
-    <input type="hidden" name="sender" ng-model="sendfrm.senderName" value="{{sendfrm.senderName}}"/>
     </div>
   </form>
 </ion-content>

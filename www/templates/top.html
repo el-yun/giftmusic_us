@@ -3,14 +3,14 @@
     <p ui-sref="player" class="subject">나의 앨범</p>
     <p class="more" ui-sref="myalbum">+ 더보기</p>
     <div class="metro-box">
-      <div class="img-button" ng-repeat="(i, album) in albums" ng-click="goAlbum(album.PLAYGROUP)" ng-show="i<3">
+      <div class="img-button" ng-repeat="(i, album) in albums" ng-show="i<4">
         <div class="img-cover">
-          <p class="album-title">{{album.POST_TITLE}}</p>
-          <span class="btn">담기</span><span class="btn">재생</span>
+          <p class="album-title" ng-click="viewMenu(album.PLAYGROUP)">{{album.POST_TITLE}}</p>
+          <span class="btn playing" ng-click="goAlbum(album.PLAYGROUP)" ></span><span class="btn packing" ng-click="pushAlbum(album.PLAYGROUP)"></span>
         </div>
         <div class="album-cover" style="background-image:url('http://masterplayer.net/track/image/thumb_100000.jpg')"></div>
       </div>
-      <div class="img-button" ui-sref="send">
+      <div class="img-button" ui-sref="send" ng-show="albums.length - 4 < 0">
         <div class="img-cover none">
           <p class="album-title">앨범을 선물해<br>보세요</p>
           <span class="btn">선물</span>
@@ -25,12 +25,19 @@
       <div class="img-button" ui-sref="player">
         <div class="img-cover">
           <p class="album-title">오늘의 음악</p>
-          <span class="btn">담기</span><span class="btn">재생</span>
+          <span class="btn playing" ng-click="goAlbum(1)" ></span><span class="btn packing"></span>
         </div>
         <div class="album-cover" style="background-image:url('http://masterplayer.net/track/image/thumb_100000.jpg')"></div>
       </div>
     </div>
   </div>
+  <div class="toast fadein fadeout" ng-show="toast == true">{{toast_message}}</div>
 </div>
+<div class="tab-control bottom" ng-show="menu">
+  <a class="tab-btn" ng-click="gift(selectAlbum)">선물하기</a>
+  <a class="tab-btn" ng-click="goAlbum(selectAlbum)">듣기</a>
+  <a class="tab-btn" ng-click="pushAlbum(selectAlbum)">담기</a>
+</div>
+
 
 

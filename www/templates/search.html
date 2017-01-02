@@ -4,9 +4,9 @@
     <div class="search-box">
       <form ng-submit="trackSearch(this)">
         <input type="text" name="keyword" ng-model="keyword" placeholder="듣고 싶은 곡을 검색하세요."/>
+        <button class="search">검색</button>
       </form>
     </div>
-    <div class="header-btn-login">로그인</div>
   </div>
   <div ui-view id="search" class="search-page">
     <div class="search-list box">
@@ -28,9 +28,10 @@
       </ul>
     </div>
   </div>
+  <div class="toast fadein fadeout" ng-show="toast == true">{{toast_message}}</div>
 </ion-content>
-<div class="tab-control bottom">
-  <a class="tab-btn">선물하기</a>
-  <a class="tab-btn">듣기</a>
+<div class="tab-control bottom" ng-show="menu">
+  <a class="tab-btn" ng-click="gift()">선물하기</a>
+  <a class="tab-btn" ng-click="goAlbum()">듣기</a>
   <a class="tab-btn" ng-click="pushList()">담기</a>
 </div>

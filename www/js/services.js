@@ -21,6 +21,8 @@ angular.module('starter.services', [])
           }
         );
     };
+
+
     var getRecommend= function(){
       return $http({
         method: 'GET', //방식
@@ -51,7 +53,6 @@ angular.module('starter.services', [])
               receive.push(track);
             });
             tracks = receive;
-          console.log(tracks);
         });
       },
       all: function() {
@@ -79,6 +80,12 @@ angular.module('starter.services', [])
           data: {keyword: text}
         });
       },
+      getTracks : function(seqno, user){
+        return $http({
+          method: 'GET', //방식
+          url: "http://masterplayer.net/main/playlist?seqno=" + seqno + "&user=" + user
+        });
+      },
       pushPlayGroup : function(group, tracks, type){
         return $http({
           method: 'post', //방식
@@ -94,6 +101,12 @@ angular.module('starter.services', [])
         }).success(function(d){
           console.log(d);
         });
+      },
+      setPlayGroup : function(t){
+        angular.forEach(t.album, function (track) {
+          tracks.push(track);
+        });
+        return tracks;
       },
       sendPost : function(d, cart){
         return $http({
