@@ -8,7 +8,7 @@
           <p class="album-title" ng-click="viewMenu(album.PLAYGROUP)">{{album.POST_TITLE}}</p>
           <span class="btn playing" ng-click="goAlbum(album.PLAYGROUP)" ></span><span class="btn packing" ng-click="pushAlbum(album.PLAYGROUP)"></span>
         </div>
-        <div class="album-cover" style="background-image:url('http://masterplayer.net/track/image/thumb_100000.jpg')"></div>
+        <div class="album-cover" style="background-image:url({{album.thumb}})"></div>
       </div>
       <div class="img-button" ui-sref="send" ng-show="albums.length - 4 < 0">
         <div class="img-cover none">
@@ -23,7 +23,7 @@
     <p class="subject">추천 앨범</p>
     <div class="metro-box">
       <div class="img-button" ui-sref="player">
-        <div class="img-cover">
+        <div class="img-cover recommand">
           <p class="album-title">오늘의 음악</p>
           <span class="btn playing" ng-click="goAlbum(1)" ></span><span class="btn packing"></span>
         </div>

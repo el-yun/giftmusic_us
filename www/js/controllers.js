@@ -1,5 +1,6 @@
 var groupseq = 1;
 var cart = [];
+var tracks = [];
 var toastView = function(scope, timeout, message){
   scope.toast_message = message;
   scope.toast = true;
@@ -11,7 +12,6 @@ const user = "test";
 angular.module('starter.controllers', ['ionic'])
   .controller('usCtrl', ['$scope', '$state','TrackList', function ($scope, $state, TrackList) {
     $scope.trackSearch = function(){
-      console.log("go");
       $state.go('search', { 'keyword': $scope.search });
     };    // 목록 담기
 
@@ -81,7 +81,7 @@ angular.module('starter.controllers', ['ionic'])
         TrackList.getSearchTrack(d).then(function(d){
           search = [];
           angular.forEach(d.data.album, function (t) {
-            var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, number: t.TRACK_NUMBER};
+            var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, album: t.ALBUM, number: t.TRACK_NUMBER};
             search.push(track);
           });
           $scope.searchTracks = search;
@@ -93,7 +93,6 @@ angular.module('starter.controllers', ['ionic'])
         printList(t.keyword);
       };
       if(typeof $stateParams.keyword != 'undefined'){
-        console.log($stateParams.keyword);
         printList($stateParams.keyword);
       }
 
@@ -121,12 +120,19 @@ angular.module('starter.controllers', ['ionic'])
       };
 
       $scope.goAlbum = function(){
-        TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
-        $state.go('player', { 'group': null });
+        $scope.pushList();
+        $state.go('player', { 'group': -1 });
       };
 
       $scope.pushList = function(){
-        TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+        //TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+        var pack = [];
+        angular.forEach(search, function(t){
+          angular.forEach($scope.selection, function(s) {
+            if(t.number == s) pack.push(t);
+          });
+        });
+        tracks = pack;
         toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
       };
 
@@ -138,8 +144,8 @@ angular.module('starter.controllers', ['ionic'])
 
   // Index Page
   .controller('topCtrl', ['$scope', 'TrackList', '$state', '$timeout',function ($scope, TrackList, $state, $timeout) {
-    TrackList.init(); // 초기화
-    var albums = [{'PLAYGROUP' : groupseq, 'POST_TITLE' : '내가 담은 음악', 'POST_TOKEN' : null}];
+    //TrackList.init(); // 초기화
+    var albums = [{'PLAYGROUP' : -1, 'POST_TITLE' : '내가 담은 음악', 'POST_TOKEN' : null, 'thumb': 'http://masterplayer.net/track/image/thumb_000000.jpg'}];
     TrackList.getAlbum(user).then(function(d){
       angular.forEach(d.data[0], function(a){
         albums.push(a);
@@ -147,16 +153,17 @@ angular.module('starter.controllers', ['ionic'])
       $scope.albums = albums;
     });
 
+    $scope.pushAlbum = function(seqno){
+      TrackList.getTracks(seqno, user).then(function(d){
+        var result = TrackList.setPlayGroup(d.data.album);
+        tracks = tracks.concat(result);
+        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
+      });
+    };
+
     $scope.viewMenu = function(seqno){
       $scope.menu = true;
       $scope.selectAlbum = seqno;
-    };
-
-    $scope.pushAlbum = function(seqno){
-      TrackList.getTracks(seqno, user).then(function(d){
-        var result = TrackList.setPlayGroup(d.data);
-        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
-      });
     };
 
     $scope.gift = function(seqno){
@@ -169,12 +176,8 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.goAlbum = function(group){
-      if(typeof token == 'undefined'){
-        $state.go('player', { 'group': null });
-      } else {
-        $state.go('player', { 'group': group });
-      }
-    };    // 목록 담기
+      $state.go('player', { 'group': group });
+    };
   }])
 
   // Myalbum
@@ -185,14 +188,12 @@ angular.module('starter.controllers', ['ionic'])
       angular.forEach(d.data[0], function(a){
         albums.push(a);
       });
-      console.log(albums);
       $scope.albums = albums;
     });
 
     $scope.pushAlbum = function(seqno){
-      console.log(seqno);
       TrackList.getTracks(seqno, user).then(function(d){
-        var result = TrackList.setPlayGroup(d.data);
+        var result = TrackList.setPlayGroup(d.data.album);
         toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
       });
     };
@@ -205,20 +206,17 @@ angular.module('starter.controllers', ['ionic'])
     $scope.gift = function(seqno){
       TrackList.getTracks(seqno, user).then(function(d){
         angular.forEach(d.data.album, function (t) {
-          cart.push(t);
+          cart.push(t.TRACK_NUMBER);
         });
         $state.go('send', { 'cnt' : cart });
       });
     };
 
     $scope.goAlbum = function(group){
-      if(typeof token == 'undefined'){
-        $state.go('player', { 'group': null });
-      } else {
-        $state.go('player', { 'group': group });
-      }
-    };    // 목록 담기
+      $state.go('player', { 'group': group });
+    };
   }])
+
   // Send
   .controller('sendCtrl', ['$rootScope' ,'$scope', 'TrackList', '$stateParams', '$httpParamSerializerJQLike', function ($rootScope, $scope, TrackList, $stateParams, $httpParamSerializerJQLike) {
 	  var token = "test";
@@ -230,22 +228,7 @@ angular.module('starter.controllers', ['ionic'])
       function(event, toState, toParams, fromState, fromParams){
         // do something
         $scope.albumcnt = cart.length;
-      });
-    /*
-    $scope.uploadFile = function(event){
-      var files = event.target.files;
-      if (files && files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(event) {
-          $scope.sendfrm.image = event.target.result;
-          $scope.sendfrm.preview = event.target.result;
-          $scope.$apply();
-        }
-        reader.readAsDataURL(files[0]);
-        //reader.readAsBinaryString(files[0]);
-      }
-	  };
-	  */
+    });
 
 	  $scope.sender = function(){
       var formData = $scope.sendfrm;
@@ -264,6 +247,7 @@ angular.module('starter.controllers', ['ionic'])
 	var current = -1;
 	$scope.title = "No Track";
 	$scope.artist = "No Artist";
+  $scope.album = "No Album";
 	$scope.thumb = ""
   $scope.seek = 0;
   $scope.progress = function(t){
@@ -294,11 +278,15 @@ angular.module('starter.controllers', ['ionic'])
 	  // Async
 	  $timeout(function () {
 		if (TrackList.all().length > 0) {
-		  $scope.dynamicTrack = {};
 		  $scope.tracks = [];
 		  $scope.tracks = TrackList.all();
+      PlayerService.trackList = [];
 		  angular.forEach($scope.tracks, function (t) {
-			PlayerService.trackList.push(t);
+        var chk = false;
+        angular.forEach(PlayerService.trackList, function (p){
+          if(p.seq == t.seq) chk = true;
+        });
+			  if(!chk) PlayerService.trackList.push(t);
 		  });
 		  PlayerService.play();
 		} else {
@@ -307,12 +295,14 @@ angular.module('starter.controllers', ['ionic'])
 	  });
 	}
 	$interval(function() {
+    $scope.paused = PlayerService.isPaused;
 		var index = PlayerService.currentIndex;
     if(PlayerService.trackList.length > 0) {
       if (current != index) {
         $scope.title = PlayerService.trackList[index].title;
         $scope.artist = PlayerService.trackList[index].artist;
         $scope.thumb = PlayerService.trackList[index].thumb;
+        $scope.album = PlayerService.trackList[index].album;
         $scope.indexer = index;
         current = index;
       }
@@ -324,9 +314,13 @@ angular.module('starter.controllers', ['ionic'])
     }
 	}, 500);
     // init
-    if(typeof $stateParams.group == 'undefined') $stateParams.group = groupseq;
-    else groupseq = $stateParams.group;
-    TrackList.getMyPlaylist($stateParams.group, user);
+    if($stateParams.group != -1){
+      groupseq = $stateParams.group;
+      TrackList.getMyPlaylist($stateParams.group, user);
+    } else {
+      TrackList.clear();
+      TrackList.setTracks(tracks);
+    }
     setPlayer();
   }])
 .directive('customOnChange', function() {
@@ -351,7 +345,6 @@ angular.module('starter.controllers', ['ionic'])
         var reader = new FileReader();
         reader.onload = function(event) {
           //scope.file = event.target.result;
-          console.log(scope);
         }
         scope.$apply();
         //reader.readAsDataURL(file);

@@ -42,7 +42,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 })
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider, $stateProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -61,6 +61,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('us.top', {
       url: '/top',
       templateUrl: 'templates/top.html',
+      cache: false,
       controller: 'topCtrl'
     })
     .state('search', {
@@ -72,22 +73,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('editlist', {
       url: '/editlist',
       templateUrl: 'templates/editlist.html',
+      cache: false,
       controller: 'editCtrl'
     })
     .state('player', {
-	  cache: false,
-      url: '/player',
+      url: '/player/:group',
       templateUrl: 'templates/player.html',
+      cache: false,
       controller: 'playerCtrl'
     })
     .state('myalbum', {
       url: '/myalbum',
       templateUrl: 'templates/myalbum.html',
+      cache: false,
       controller: 'myalbumCtrl'
     })
     .state('send', {
       url: '/send',
       templateUrl: 'templates/send.html',
+      cache: false,
       controller: 'sendCtrl'
     })
 

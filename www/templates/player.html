@@ -3,6 +3,7 @@
   <div ui-sref="us.top" class="player-logo"></div>
   <div class="player-display" style="background-image:url('{{thumb}}')">
     <div class="player-cover">
+      <div class="player-albumcover"></div>
       <!--
           <ion-audio-track track="dynamicTrack" toggle-playback="togglePlayback">
         <ion-audio-progress-bar display-time display-info></ion-audio-progress-bar>
@@ -15,10 +16,10 @@
       -->
       <div class="player-option">
         <div class="player-title" >{{title}}</div>
-        <div class="player-artist">{{artist}}</div>
+        <div class="player-artist">{{artist}} ({{album}})</div>
         <div class="player-controller">
             <span class="btn prev-button" ng-click="playerPrev()"></span>
-            <span class="btn play-button" ng-click="playerStop()"></span>
+            <span class="btn play-button" ng-class="{stop : paused == true}" ng-click="playerStop()"></span>
             <span class="btn next-button" ng-click="playerNext()"></span>
         </div>
         <div class="player-repeat"><span>가사</span><span class="active">반복</span></div>
@@ -40,7 +41,7 @@
 					</dl>
 				</div>
 				<div class="item-right">
-					<span ng-click="playerToPlay(i)" class="{{indexer == i ? 'playing' : ''}}"></span>
+          <span ng-click="playerToPlay(i)" class="{{indexer == i ? 'playing' : 'unplaying'}}"></span>
 				</div>
 			</li>
 		</ul>

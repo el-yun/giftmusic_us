@@ -40,15 +40,16 @@
         </div>
       </div>
       <div class="payment-box">
+        <div class="form-box">
+          <p class="payment-title">결제 금액</p>
+          <p class="payment-money">0 원</p>
+        </div>
       </div>
+      <a class="double-btn" ng-click="sender()">보내기</a>
+      <a class="double-btn" ui-sref="us.top">취소</a>
       <input type="hidden" name="cart" ng-model="sendfrm.tracks"/>
       <input type="hidden" name="sender" ng-model="sendfrm.senderName" value="{{sendfrm.senderName}}"/>
     </div>
     </div>
   </form>
 </ion-content>
-<div class="tab-control bottom">
-  <a class="tab-btn" ng-click="sender()">보내기</a>
-  <a class="tab-btn"></a>
-  <a class="tab-btn"></a>
-</div>

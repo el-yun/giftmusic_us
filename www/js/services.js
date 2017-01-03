@@ -15,7 +15,7 @@ angular.module('starter.services', [])
             tracks = new Array();
             // Push Tracks
             angular.forEach(res.album, function(t){
-              var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, send: t.TYPE};
+              var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, album: t.ALBUM ,send: t.TYPE};
               tracks.push(track);
             });
           }
@@ -37,23 +37,10 @@ angular.module('starter.services', [])
 
     return {
       init: function(){
-        tracks = [];
         getRecommend();
-        getList(groupseq, "PLAYLIST").then(function(d){
-          receive = [];
-            angular.forEach(d.data.album, function (t) {
-              var track = {
-                seq: t.SEQ,
-                url: t.TRACK_STREAM,
-                artist: t.ARTIST,
-                title: t.TITLE,
-                thumb: t.ALBUM_THUMB,
-                number: t.TRACK_NUMBER
-              };
-              receive.push(track);
-            });
-            tracks = receive;
-        });
+      },
+      clear: function(){
+        tracks = [];
       },
       all: function() {
         return tracks;
@@ -103,8 +90,15 @@ angular.module('starter.services', [])
         });
       },
       setPlayGroup : function(t){
-        angular.forEach(t.album, function (track) {
+        angular.forEach(t, function (t) {
+          var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, album: t.ALBUM ,send: t.TYPE};
           tracks.push(track);
+        });
+        return tracks;
+      },
+      setTracks : function(album){
+        angular.forEach(album, function (t) {
+          tracks.push(t);
         });
         return tracks;
       },

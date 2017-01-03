@@ -18,11 +18,11 @@
           <div class="item-content">
             <dl>
               <dt class="item-content-title">{{track.title}}</dt>
-              <dt class="item-content-description">{{track.artist}}</dt>
+              <dt class="item-content-description">{{track.artist}} | {{track.album}}</dt>
             </dl>
           </div>
           <div class="item-right">
-            <span ng-click="playTrack(i)" class="toplay"></span>
+            <span ng-click="playerToPlay(i)" class="unplaying"></span>
           </div>
         </li>
       </ul>
