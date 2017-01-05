@@ -25,9 +25,12 @@ button.search { float:right; border:0px solid; background-color:#503582; color:#
 /* navigate */
 .navigate { position: relative; float: left; height: 40px; }
 .sbox { float: left; width:100%; min-height: 40px; cursor:pointer; }
-.navigate-title { position:absolute; top:8px; left: 50%; margin-left: -60px;width: 120px; font-size: 24px; font-weight: bold; color:#503582; text-align:center; }
+.navigate-title { position:absolute; top:8px; left: 50%; margin-left: -68px;width: 136px; font-size: 24px; font-weight: bold; color:#503582; text-align:center; }
 .backkey { position: absolute; left: 15px; top: 15px; background-image: url('../img/back_icon.png'); display:block; width: 42px; height:39px; background-size: 29px 20px;background-repeat:no-repeat;  }
-
+.icon { float:left; display:block; width:40px; height: 30px; background-repeat: no-repeat; }
+.icon.cart { background-image: url('../img/cart_p16.png'); margin-top: 2px; background-size: 32px 30.1px; }
+.icon.album { background-image: url('../img/mymusic.png'); margin-top: 2px; background-size: 28px 30.1px; }
+.icon.present { background-image: url('../img/present_p14.png'); margin-top: 2px; background-size: 28px 30.1px; }
 /* send gift */
 .form-box { float:left; width: calc(100% - 30px); min-height: 70px; margin: 5px 15px 5px 15px; }
 p.form-subject { font-size: 18px; font-weight: bold; margin: 15px 5px 10px 5px;}
@@ -125,7 +128,7 @@ input[type=range]::-moz-range-thumb {  border: none;  height: 16px;  width: 16px
 /*hide the outline behind the border*/
 input[type=range]:-moz-focusring{  outline: 1px solid white;  outline-offset: -1px;}
 
-div.toast { position:absolute; bottom:50px; left: 0px; right: 0px; height: 50px; background-color:rgba(0, 0, 0, 0.8); z-index:20; color: #FFF; padding: 15px 10px; text-align:center; }
+div.toast { position:fixed; bottom:50px; left: 0px; right: 0px; height: 50px; background-color:rgba(0, 0, 0, 0.8); z-index:20; color: #FFF; padding: 15px 10px; text-align:center; }
 
 .fadein,
 .fadeout {

@@ -89,7 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       controller: 'myalbumCtrl'
     })
     .state('send', {
-      url: '/send',
+      url: '/send/:cnt',
       templateUrl: 'templates/send.html',
       cache: false,
       controller: 'sendCtrl'

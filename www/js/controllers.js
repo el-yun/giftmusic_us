@@ -18,14 +18,18 @@ angular.module('starter.controllers', ['ionic'])
   }])
   .controller('editCtrl', ['$scope','$stateParams', '$state', 'TrackList', function ($scope, $stateParams, $state, TrackList) {
     $scope.selection = [];
-    TrackList.getMyPlaylist(groupseq, user).then(function(d){
       var edit = [];
+	  /*
       angular.forEach(d.data.album, function (t) {
         var track = {seq: t.SEQ, url: t.TRACK_STREAM, artist: t.ARTIST, title: t.TITLE, thumb: t.ALBUM_THUMB, number: t.TRACK_NUMBER};
         edit.push(track);
       });
+	  */
+	  angular.forEach(tracks, function(t){
+		edit.push(t);
+	  });
       $scope.searchTracks = edit;
-    });
+	  console.log(edit);
 
     $scope.goAlbum = function(){
       TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
@@ -60,8 +64,7 @@ angular.module('starter.controllers', ['ionic'])
     };
 
     $scope.setChangePost = function(){
-      $state.go('send', { 'cnt' : cart });
-      $scope.apply();
+      $state.go('send', { 'cnt' : cart.length });
     };
   }])
 
@@ -133,11 +136,11 @@ angular.module('starter.controllers', ['ionic'])
           });
         });
         tracks = pack;
-        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
+        toastView($scope, $timeout, "선택한 음악이 담겼습니다.");
       };
 
       $scope.gift = function(){
-        TrackList.pushPlayGroup(groupseq, $scope.selection, "PLAYLIST");
+        $scope.pushList();
         $state.go('send', { 'cnt' : cart });
       }
   }])
@@ -155,9 +158,19 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.pushAlbum = function(seqno){
       TrackList.getTracks(seqno, user).then(function(d){
-        var result = TrackList.setPlayGroup(d.data.album);
-        tracks = tracks.concat(result);
-        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
+        //var result = TrackList.setPlayGroup(d.data.album);
+		//tracks = tracks.concat(result);
+		  angular.forEach(d.data.album, function(r){
+			  var chk = false;
+			  angular.forEach(tracks, function(t){
+				if(t.seq == r.SEQ) chk = true;
+			  });
+			  if(!chk){
+				  var track = {seq: r.SEQ, url: r.TRACK_STREAM, artist: r.ARTIST, title: r.TITLE, thumb: r.ALBUM_THUMB, album: r.ALBUM, number: r.TRACK_NUMBER};  
+				  tracks.push(track);
+			  }
+		  });
+        toastView($scope, $timeout, "선택한 음악이 담겼습니다.");
       });
     };
 
@@ -171,7 +184,7 @@ angular.module('starter.controllers', ['ionic'])
         angular.forEach(d.data.album, function (t) {
           cart.push(t.TRACK_NUMBER);
         });
-        $state.go('send', { 'cnt' : cart });
+        $state.go('send', { 'cnt' : cart.length });
       });
     };
 
@@ -193,8 +206,19 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.pushAlbum = function(seqno){
       TrackList.getTracks(seqno, user).then(function(d){
-        var result = TrackList.setPlayGroup(d.data.album);
-        toastView($scope, $timeout, "앨범의 노래를 플레이리스트에 담았습니다.");
+		//var result = TrackList.setPlayGroup(d.data.album);
+		  angular.forEach(d.data.album, function(r){
+			  var chk = false;
+			  angular.forEach(tracks, function(t){
+				if(t.seq == r.SEQ) chk = true;
+			  });
+			  if(!chk){
+				  var track = {seq: r.SEQ, url: r.TRACK_STREAM, artist: r.ARTIST, title: r.TITLE, thumb: r.ALBUM_THUMB, album: r.ALBUM, number: r.TRACK_NUMBER};  
+				  tracks.push(track);
+			  }
+		  });
+		  console.log(tracks);
+        toastView($scope, $timeout, "선택한 음악이 담겼습니다.");
       });
     };
 
@@ -224,11 +248,17 @@ angular.module('starter.controllers', ['ionic'])
     $scope.tracks = [];
     $scope.sendfrm = [];
 
+	console.log($stateParams);
+
+	if(typeof $stateParams.cnt != 'undefined' && $stateParams.cnt != "") $scope.albumcnt = $stateParams.cnt;
+	else $scope.albumcnt = 0;
+	/*
     $rootScope.$on('$stateChangeStart',
       function(event, toState, toParams, fromState, fromParams){
         // do something
         $scope.albumcnt = cart.length;
     });
+	*/
 
 	  $scope.sender = function(){
       var formData = $scope.sendfrm;
@@ -257,11 +287,11 @@ angular.module('starter.controllers', ['ionic'])
   };
 	$scope.playerPrev = function(){
 		PlayerService.previous();
-    $scope.seek = 0;
+		$scope.seek = 0;
 	};
 	$scope.playerNext = function(){
 		PlayerService.next();
-    $scope.seek = 0;
+		$scope.seek = 0;
 	};
 	$scope.playerStop = function(){
 		PlayerService.pause();
@@ -280,12 +310,12 @@ angular.module('starter.controllers', ['ionic'])
 		if (TrackList.all().length > 0) {
 		  $scope.tracks = [];
 		  $scope.tracks = TrackList.all();
-      PlayerService.trackList = [];
+		  PlayerService.trackList = [];
 		  angular.forEach($scope.tracks, function (t) {
-        var chk = false;
-        angular.forEach(PlayerService.trackList, function (p){
-          if(p.seq == t.seq) chk = true;
-        });
+				var chk = false;
+				angular.forEach(PlayerService.trackList, function (p){
+				  if(p.seq == t.seq) chk = true;
+				});
 			  if(!chk) PlayerService.trackList.push(t);
 		  });
 		  PlayerService.play();
@@ -297,21 +327,22 @@ angular.module('starter.controllers', ['ionic'])
 	$interval(function() {
     $scope.paused = PlayerService.isPaused;
 		var index = PlayerService.currentIndex;
-    if(PlayerService.trackList.length > 0) {
-      if (current != index) {
-        $scope.title = PlayerService.trackList[index].title;
-        $scope.artist = PlayerService.trackList[index].artist;
-        $scope.thumb = PlayerService.trackList[index].thumb;
-        $scope.album = PlayerService.trackList[index].album;
-        $scope.indexer = index;
-        current = index;
-      }
-      var duration = PlayerService.duration();
-      var time = PlayerService.time();
-      $scope.seek = Math.floor(100 * (time / duration));
-      $scope.playtime = Math.floor(time * 1000);
-      $scope.endtime = Math.floor(duration * 1000);
-    }
+		if(PlayerService.trackList.length > 0 && PlayerService.isPaused == false ) {
+		  if (current != index) {
+			$scope.title = PlayerService.trackList[index].title;
+			$scope.artist = PlayerService.trackList[index].artist;
+			$scope.thumb = PlayerService.trackList[index].thumb;
+			$scope.album = PlayerService.trackList[index].album;
+			$scope.indexer = index;
+			current = index;
+		  }
+		  var duration = PlayerService.duration();
+		  var time = PlayerService.time();
+		  var seek = document.getElementById("seek");
+		  seek.value = Math.floor(100 * (time / duration));
+		  $scope.playtime = Math.floor(time * 1000);
+		  $scope.endtime = Math.floor(duration * 1000);
+		}
 	}, 500);
     // init
     if($stateParams.group != -1){

@@ -173,6 +173,7 @@ angular.module('starter.services', [])
         return AudioFactory.currentTime;
       },
       toSeek : function(t){
+		myPlayer.currentTime = t;
         AudioFactory.currentTime = t;
       }
     };
